@@ -56,9 +56,6 @@ def main():
     # initialize pygame
     pygame.init()
     
-    # load and set logo
-    logo = pygame.image.load("logo32x32.png")
-    pygame.display.set_icon(logo)
     pygame.display.set_caption("Double Pendulum")
     
     #ticks
