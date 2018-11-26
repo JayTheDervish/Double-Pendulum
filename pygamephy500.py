@@ -99,7 +99,8 @@ def main():
             
             if mouseState[0]:
                 cursorPos = pygame.mouse.get_pos()
-                circle.update(cursorPos[0], cursorPos[1])
+                if (cursorPos[0] - tube2.startpos[0])**2 + (cursorPos[1] - tube2.startpos[1])**2 == tube2.lengthSquared:
+                    circle.update(cursorPos[0], cursorPos[1])
         
         #circle2.update(0, 1)
         tube1.update(240 , 0, circle2.x, circle2.y)
