@@ -7,7 +7,6 @@ Created on Sat Nov 17 18:46:22 2018
 
 """
 To Do:
-    Handle input from mouse
     Parent bars to masses
     Copy integration code to file
 """
@@ -40,8 +39,8 @@ class Mass:
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.size, self.width)
         
     def update(self, x, y):
-        self.x = self.x + x
-        self.y = self.y + y
+        self.x = x
+        self.y = y
 
 class Tube:
     
@@ -50,13 +49,15 @@ class Tube:
         self.endpos = endpos
         self.color = color
         self.width = width
+        self.lengthSquared = (endpos[0] - startpos[0])**2 + (endpos[1] - startpos[1])**2
         
     def display(self):
         pygame.draw.line(screen, self.color, self.startpos, self.endpos, self.width)
         
-    def update(self, x, y):
-        #self.startpos = (self.startpos[0] + 1, self.startpos[1] + 1)
-        self.endpos = (self.endpos[0] + x, self.endpos[1] + y)
+    def update(self, x1, y1, x2, y2):
+        if (x2 - x1)**2 + (y2 - y1)**2 == self.lengthSquared:
+            self.startpos = (x1, y1)
+            self.endpos = (x2, y2)
 
 
 def main():
@@ -71,11 +72,11 @@ def main():
     # main loop condition
     running = True 
     
-    circle = Mass(150 + 240, 150, 10, red)
-    circle2 = Mass(100 + 240, 100, 10, blue)
+    circle = Mass(390, 150, 10, red)
+    circle2 = Mass(340, 100, 10, blue)
     
-    tube1 = Tube((240 , 0), (100 + 240, 100), black)
-    tube2 = Tube((100 + 240, 100), (150 + 240, 150), black)
+    tube1 = Tube((240 , 0), (circle2.x, circle2.y), black)
+    tube2 = Tube((circle2.x, circle2.y), (circle.x, circle.y), green)
     
     fps = 60
     
@@ -93,11 +94,16 @@ def main():
         
         screen.fill(white)
         
+        if pygame.mouse.get_focused():
+            mouseState = pygame.mouse.get_pressed()
+            
+            if mouseState[0]:
+                cursorPos = pygame.mouse.get_pos()
+                circle.update(cursorPos[0], cursorPos[1])
         
-        circle.update(0, 1)
-        circle2.update(0, 1)
-        tube1.update(-2, 1)
-        tube2.update(-3, 2)
+        #circle2.update(0, 1)
+        tube1.update(240 , 0, circle2.x, circle2.y)
+        tube2.update(circle2.x, circle2.y, circle.x, circle.y)
         
         
         circle.display()
