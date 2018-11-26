@@ -5,6 +5,13 @@ Created on Sat Nov 17 18:46:22 2018
 @author: JTColeman
 """
 
+"""
+To Do:
+    Handle input from mouse
+    Parent bars to masses
+    Copy integration code to file
+"""
+
 import pygame
 
 #defining some colors
