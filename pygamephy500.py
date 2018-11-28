@@ -105,7 +105,7 @@ def main():
         tube1.update(240 , 0, circle2.x, circle2.y)
         tube2.update(circle2.x, circle2.y, circle.x, circle.y)
         
-        
+        #Render Code that will not change
         circle.display()
         circle2.display()
         tube1.display()
