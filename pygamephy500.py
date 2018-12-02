@@ -12,6 +12,7 @@ To Do:
 """
 
 import pygame
+import numpy as np
 
 #defining some colors
 black = 0, 0, 0
@@ -59,6 +60,40 @@ class Tube:
             self.startpos = (x1, y1)
             self.endpos = (x2, y2)
 
+def rungekuttasecondorder(f1, f2, a, b, n, alpha):
+    h = (b - a)/n
+    t = a
+    x = alpha[0]
+    y = alpha[1]
+    i = 1
+    xs = []
+    ys = []
+    ts = []
+    xs.append(x)
+    ys.append(y)
+    ts.append(t)
+    k1 = [0, 0]
+    k2 = [0, 0]
+    k3 = [0, 0]
+    k4 = [0, 0]
+    while (i < n):
+        k1[0] =  f1(t, x, y)
+        k1[1] =  f2(t, x, y)
+        k2[0] =  f1(t + h/2, x + k1[0]/2, y + k1[1]/2)
+        k2[1] =  f2(t + h/2, x + k1[0]/2, y + k1[1]/2)
+        k3[0] =  f1(t + h/2, x + k2[0]/2, y + k2[1]/2)
+        k3[1] =  f2(t + h/2, x + k2[0]/2, y + k2[1]/2)
+        k4[0] =  f1(t + h, x + k3[0], y + k3[1])
+        k4[1] =  f2(t + h, x + k3[0], y + k3[1])
+        x = x + h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])/6
+        y = y + h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])/6
+        t = a + i * h
+        i = i + 1
+        """plot (t, w)"""
+        xs.append(x)
+        ys.append(y)
+        ts.append(t)
+    return
 
 def main():
     # initialize pygame
@@ -69,14 +104,46 @@ def main():
     #ticks
     clock = pygame.time.Clock()
     
+    #get input
+    print('Input mass 1:')
+    m1 = input()
+    print('Input line 1:')
+    l1 = input()
+    l1 = int(l1)
+    print('Input mass 2:')
+    m2 = input()
+    print('Input line 2:')
+    l2 = input()
+    l2 = int(l2)
+    print('Input theta 1 angle:')
+    theta1 = input()
+    theta1 = float(theta1) * (np.pi/180)
+    print('Input theta 2 angle:')
+    theta2 = input()
+    theta2 = float(theta2) * (np.pi/180)
+    print('Input g:')
+    g = input()
+    
+    
     # main loop condition
     running = True 
     
-    circle = Mass(390, 150, 10, red)
-    circle2 = Mass(340, 100, 10, blue)
+    #font
+    msg = pygame.font.Font('freesansbold.ttf',15)
     
-    tube1 = Tube((240 , 0), (circle2.x, circle2.y), black)
-    tube2 = Tube((circle2.x, circle2.y), (circle.x, circle.y), green)
+    x1 = l1*np.sin(theta1)
+    y1 = l1*np.cos(theta1)
+    
+    x2 = x1 + l2*np.sin(theta2)
+    y2 = y1 + l2*np.cos(theta2)
+    
+    mass = Mass(int(x1), int(y1), 10, red)
+    mass2 = Mass(int(x2), int(y2), 10, blue)
+    
+    tube1 = Tube((240 , 0), (mass2.x, mass2.y), black)
+    tube2 = Tube((mass2.x, mass2.y), (mass.x, mass.y), green)
+    
+    ltext1 = msg.render("Length 1 = "+ str(int(tube1.lengthSquared)), 1, black)
     
     fps = 60
     
@@ -93,21 +160,14 @@ def main():
                 running = False
         
         screen.fill(white)
-        
-        if pygame.mouse.get_focused():
-            mouseState = pygame.mouse.get_pressed()
-            
-            if mouseState[0]:
-                cursorPos = pygame.mouse.get_pos()
-                #if (cursorPos[0] - tube2.startpos[0])**2 + (cursorPos[1] - tube2.startpos[1])**2 == tube2.lengthSquared:
-                circle.update(cursorPos[0], cursorPos[1])
-        
-        tube1.update(240 , 0, circle2.x, circle2.y)
-        tube2.update(circle2.x, circle2.y, circle.x, circle.y)
+                
+        tube1.update(240, 0, mass2.x, mass2.y)
+        tube2.update(mass2.x, mass2.y, mass.x, mass.y)
         
         #Render Code that will not change
-        circle.display()
-        circle2.display()
+        screen.blit(ltext1, (0, 10))
+        mass.display()
+        mass2.display()
         tube1.display()
         tube2.display()
         
