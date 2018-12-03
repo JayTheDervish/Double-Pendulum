@@ -158,6 +158,11 @@ def main():
                 running = False
         
         screen.fill(white)
+        
+        time = pygame.time.get_ticks()
+        
+        deltaTime = (time - ticksLastFrame) / 1000.0
+        
                 
         tube1.update(240, 0, mass2.x, mass2.y)
         tube2.update(mass2.x, mass2.y, mass.x, mass.y)
@@ -170,6 +175,8 @@ def main():
         tube2.display()
         
         pygame.display.flip()
+        
+        ticksLastFrame = time
                 
     pygame.quit()
                 
