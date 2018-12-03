@@ -50,15 +50,13 @@ class Tube:
         self.endpos = endpos
         self.color = color
         self.width = width
-        self.lengthSquared = (endpos[0] - startpos[0])**2 + (endpos[1] - startpos[1])**2
         
     def display(self):
         pygame.draw.line(screen, self.color, self.startpos, self.endpos, self.width)
         
     def update(self, x1, y1, x2, y2):
-        if (x2 - x1)**2 + (y2 - y1)**2 == self.lengthSquared:
-            self.startpos = (x1, y1)
-            self.endpos = (x2, y2)
+        self.startpos = (x1, y1)
+        self.endpos = (x2, y2)
 
 def rungekuttasecondorder(f1, f2, a, b, n, alpha):
     h = (b - a)/n
@@ -129,7 +127,7 @@ def main():
     running = True 
     
     #font
-    msg = pygame.font.Font('freesansbold.ttf',15)
+    msg = pygame.font.Font('freesansbold.ttf',10)
     
     x1 = l1*np.sin(theta1)
     y1 = l1*np.cos(theta1)
@@ -143,7 +141,7 @@ def main():
     tube1 = Tube((240 , 0), (mass2.x, mass2.y), black)
     tube2 = Tube((mass2.x, mass2.y), (mass.x, mass.y), green)
     
-    ltext1 = msg.render("Length 1 = "+ str(int(tube1.lengthSquared)), 1, black)
+    ltext1 = msg.render("Length 1 = "+ str(int(l1)), 1, black)
     
     fps = 60
     
