@@ -58,18 +58,6 @@ class Tube:
         self.startpos = (x1, y1)
         self.endpos = (x2, y2)
         
-def velocitytheta1(t, theta1, theta2):
-    return theta1
-
-def positiontheta1(t, theta1, theta2):
-    return (-g*(m1 + m2 + m1)*np.sin(theta1) - m2*g*np.sin(theta1 - 2*theta2) - 2*np.sin(theta1 -theta2)*m2*(theta1**2*l1*np.cos(theta1 - theta2)+theta2**2 *l2)) / (l1(m1 + m2 +m1 - m2*np.cos(2*theta1 - 2*theta2)))
-
-def velocitytheta2(t, theta1, theta2):
-    return theta2
-
-def positiontheta2(t, theta1, theta2):
-    return (2*np.sin(theta1 - theta2)*((m1 + m2)* theta1**2 * l1 + g*(m1+m2)*np.cos(theta1) + theta2**2 * l2*m2*np.cos(theta1 - theta2))) / l2*((m1 + m2) + m1 - m2*np.cos(2*theta - 2*theta2))
-
 
 def rungekuttasecondorder(f1, f2, deltaTime, n, alpha):
     h = deltaTime
@@ -134,6 +122,20 @@ def main():
     theta2 = float(theta2) * (np.pi/180)
     print('Input g:')
     g = input()
+    
+    
+    def velocitytheta1(t, theta1, theta2):
+        return theta1
+
+    def positiontheta1(t, theta1, theta2):
+        return (-g*(m1 + m2 + m1)*np.sin(theta1) - m2*g*np.sin(theta1 - 2*theta2) - 2*np.sin(theta1 -theta2)*m2*(theta1**2*l1*np.cos(theta1 - theta2)+theta2**2 *l2)) / (l1(m1 + m2 +m1 - m2*np.cos(2*theta1 - 2*theta2)))
+
+    def velocitytheta2(t, theta1, theta2):
+        return theta2
+
+    def positiontheta2(t, theta1, theta2):
+        return (2*np.sin(theta1 - theta2)*((m1 + m2)* theta1**2 * l1 + g*(m1+m2)*np.cos(theta1) + theta2**2 * l2*m2*np.cos(theta1 - theta2))) / l2*((m1 + m2) + m1 - m2*np.cos(2*theta1 - 2*theta2))
+
     
     
     # main loop condition
