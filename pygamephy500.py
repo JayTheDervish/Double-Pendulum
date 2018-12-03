@@ -5,11 +5,6 @@ Created on Sat Nov 17 18:46:22 2018
 @author: JTColeman
 """
 
-"""
-To Do:
-    Parent bars to masses
-    Copy integration code to file
-"""
 
 import pygame
 import numpy as np
@@ -59,7 +54,7 @@ class Tube:
         self.endpos = (x2, y2)
         
 
-def rungekuttasecondorder(f1, f2, deltaTime, n, alpha):
+def rungekuttasecondorder(f1, f2, deltaTime, alpha):
     h = deltaTime
     t = 0
     x = alpha[0]
@@ -75,24 +70,19 @@ def rungekuttasecondorder(f1, f2, deltaTime, n, alpha):
     k2 = [0, 0]
     k3 = [0, 0]
     k4 = [0, 0]
-    while (i < n):
-        k1[0] =  f1(t, x, y)
-        k1[1] =  f2(t, x, y)
-        k2[0] =  f1(t + h/2, x + k1[0]/2, y + k1[1]/2)
-        k2[1] =  f2(t + h/2, x + k1[0]/2, y + k1[1]/2)
-        k3[0] =  f1(t + h/2, x + k2[0]/2, y + k2[1]/2)
-        k3[1] =  f2(t + h/2, x + k2[0]/2, y + k2[1]/2)
-        k4[0] =  f1(t + h, x + k3[0], y + k3[1])
-        k4[1] =  f2(t + h, x + k3[0], y + k3[1])
-        x = x + h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])/6
-        y = y + h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])/6
-        t = 0 + i * h
-        i = i + 1
-        """plot (t, w)"""
-        xs.append(x)
-        ys.append(y)
-        ts.append(t)
-    return
+    k1[0] =  f1(t, x, y)
+    k1[1] =  f2(t, x, y)
+    k2[0] =  f1(t + h/2, x + k1[0]/2, y + k1[1]/2)
+    k2[1] =  f2(t + h/2, x + k1[0]/2, y + k1[1]/2)
+    k3[0] =  f1(t + h/2, x + k2[0]/2, y + k2[1]/2)
+    k3[1] =  f2(t + h/2, x + k2[0]/2, y + k2[1]/2)
+    k4[0] =  f1(t + h, x + k3[0], y + k3[1])
+    k4[1] =  f2(t + h, x + k3[0], y + k3[1])
+    x = x + h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])/6
+    y = y + h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])/6
+    t = 0 + i * h
+    i = i + 1
+    return y
 
 def main():
     # initialize pygame
@@ -181,6 +171,8 @@ def main():
         deltaTime = (time - ticksLastFrame) / 1000.0
         
         deltaText = msg.render("delta time is "+ str(deltaTime), 1, black)
+        
+        #call integration here
                 
         tube1.update(240, 0, mass2.x, mass2.y)
         tube2.update(mass2.x, mass2.y, mass.x, mass.y)
