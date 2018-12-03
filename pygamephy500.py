@@ -57,10 +57,23 @@ class Tube:
     def update(self, x1, y1, x2, y2):
         self.startpos = (x1, y1)
         self.endpos = (x2, y2)
+        
+def velocitytheta1(t, theta1, theta2):
+    return theta1
 
-def rungekuttasecondorder(f1, f2, a, b, n, alpha):
-    h = (b - a)/n
-    t = a
+def positiontheta1(t, theta1, theta2):
+    return (-g*(m1 + m2 + m1)*np.sin(theta1) - m2*g*np.sin(theta1 - 2*theta2) - 2*np.sin(theta1 -theta2)*m2*(theta1**2*l1*np.cos(theta1 - theta2)+theta2**2 *l2)) / (l1(m1 + m2 +m1 - m2*np.cos(2*theta1 - 2*theta2)))
+
+def velocitytheta2(t, theta1, theta2):
+    return theta2
+
+def positiontheta2(t, theta1, theta2):
+    return (2*np.sin(theta1 - theta2)*((m1 + m2)* theta1**2 * l1 + g*(m1+m2)*np.cos(theta1) + theta2**2 * l2*m2*np.cos(theta1 - theta2))) / l2*((m1 + m2) + m1 - m2*np.cos(2*theta - 2*theta2))
+
+
+def rungekuttasecondorder(f1, f2, deltaTime, n, alpha):
+    h = deltaTime
+    t = 0
     x = alpha[0]
     y = alpha[1]
     i = 1
@@ -85,7 +98,7 @@ def rungekuttasecondorder(f1, f2, a, b, n, alpha):
         k4[1] =  f2(t + h, x + k3[0], y + k3[1])
         x = x + h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])/6
         y = y + h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])/6
-        t = a + i * h
+        t = 0 + i * h
         i = i + 1
         """plot (t, w)"""
         xs.append(x)
@@ -145,6 +158,8 @@ def main():
     
     fps = 60
     
+    ticksLastFrame = 0
+    
     #main loop
     while running:
         # limit frame rate
@@ -163,12 +178,14 @@ def main():
         
         deltaTime = (time - ticksLastFrame) / 1000.0
         
+        deltaText = msg.render("delta time is "+ str(deltaTime), 1, black)
                 
         tube1.update(240, 0, mass2.x, mass2.y)
         tube2.update(mass2.x, mass2.y, mass.x, mass.y)
         
         #Render Code that will not change
         screen.blit(ltext1, (0, 10))
+        screen.blit(deltaText, (0, 20))
         mass.display()
         mass2.display()
         tube1.display()
