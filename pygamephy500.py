@@ -68,6 +68,8 @@ def main():
     clock = pygame.time.Clock()
     
     #get input
+    print('RK4? (Y/N)')
+    isRK4 = input()
     print('Input mass 1:')
     m1 = input()
     m1 = float(m1)
@@ -82,10 +84,10 @@ def main():
     l2 = float(l2)
     print('Input theta 1 angle:')
     theta1 = input()
-    theta1 = float(theta1) * (np.pi/180)
+    theta1 = float(theta1) * (np.pi/180.0)
     print('Input theta 2 angle:')
     theta2 = input()
-    theta2 = float(theta2) * (np.pi/180)
+    theta2 = float(theta2) * (np.pi/180.0)
     print('Input g:')
     g = input()
     g = float(g)
@@ -162,32 +164,33 @@ def main():
         deltaText = msg.render("delta time is "+ str(deltaTime), 1, black)
         
         #call integration here
-        """
-        #RK4
-        rk11 = positiontheta1(theta1, theta2, dtheta1, dtheta2)
-        rk1v1 = velocitytheta1(theta1, theta2, dtheta1, dtheta2)
-        rk21 = positiontheta1(theta1 + (rk11/2)*deltaTime, theta2 + (rk11/2)*deltaTime, dtheta1 + (rk11/2)*deltaTime, dtheta2 + (rk11/2)*deltaTime)
-        rk2v1 = velocitytheta1(theta1 + (rk1v1/2)*deltaTime, theta2 + (rk1v1/2)*deltaTime, dtheta1 + (rk1v1/2)*deltaTime, dtheta2 + (rk1v1/2)*deltaTime)
-        rk31 = positiontheta1(theta1 + (rk21/2)*deltaTime, theta2 + (rk21/2)*deltaTime, dtheta1 + (rk21/2)*deltaTime, dtheta2 + (rk21/2)*deltaTime)
-        rk3v1 = velocitytheta1(theta1 + (rk2v1/2)*deltaTime, theta2 + (rk2v1/2)*deltaTime, dtheta1 + (rk2v1/2)*deltaTime, dtheta2 + (rk2v1/2)*deltaTime)
-        rk41 = positiontheta1(theta1 + rk31*deltaTime, theta2 + rk31*deltaTime, dtheta1 + rk31*deltaTime, dtheta2 + rk31*deltaTime)
-        rk4v1 = positiontheta1(theta1 + rk3v1*deltaTime, theta2 + rk3v1*deltaTime, dtheta1 + rk3v1*deltaTime, dtheta2 + rk3v1*deltaTime)
-        
-        rk12 = positiontheta2(theta1, theta2, dtheta1, dtheta2)
-        rk1v2 = velocitytheta2(theta1, theta2, dtheta1, dtheta2)
-        rk22 = positiontheta2(theta1 + (rk12/2)*deltaTime, theta2 + (rk12/2)*deltaTime, dtheta1 + (rk12/2)*deltaTime, dtheta2 + (rk12/2)*deltaTime)
-        rk2v2 = velocitytheta2(theta1 + (rk1v2/2)*deltaTime, theta2 + (rk1v2/2)*deltaTime, dtheta1 + (rk1v2/2)*deltaTime, dtheta2 + (rk1v2/2)*deltaTime)
-        rk32 = positiontheta2(theta1 + (rk22/2)*deltaTime, theta2 + (rk22/2)*deltaTime, dtheta1 + (rk22/2)*deltaTime, dtheta2 + (rk22/2)*deltaTime)
-        rk3v2 = velocitytheta2(theta1 + (rk2v2/2)*deltaTime, theta2 + (rk2v2/2)*deltaTime, dtheta1 + (rk2v2/2)*deltaTime, dtheta2 + (rk2v2/2)*deltaTime)
-        rk42 = positiontheta2(theta1 + rk32*deltaTime, theta2 + rk32*deltaTime, dtheta1 + rk32*deltaTime, dtheta2 + rk32*deltaTime)
-        rk4v2 = velocitytheta2(theta1 + rk3v2*deltaTime, theta2 + rk3v2*deltaTime, dtheta1 + rk3v2*deltaTime, dtheta2 + rk3v2*deltaTime)
-        
-        theta1 = oldtheta1 + deltaTime*(rk1v1 + 2*rk2v1 + 2*rk3v1 + rk4v1)/6
-        theta2 = oldtheta2 + deltaTime*(rk1v2 + 2*rk2v2 + 2*rk3v2 + rk4v2)/6
-        
-        dtheta1 = olddtheta1 + deltaTime*(rk11 + 2*rk21 + 2*rk31 + rk41)/6
-        dtheta2 = olddtheta2 + deltaTime*(rk12 + 2*rk22 + 2*rk32 + rk42)/6
-        """
+        if(isRK4 == 'Y'):
+            """
+            #RK4
+            rk11 = positiontheta1(theta1, theta2, dtheta1, dtheta2)
+            rk1v1 = velocitytheta1(theta1, theta2, dtheta1, dtheta2)
+            rk21 = positiontheta1(theta1 + (rk11/2)*deltaTime, theta2 + (rk11/2)*deltaTime, dtheta1 + (rk11/2)*deltaTime, dtheta2 + (rk11/2)*deltaTime)
+            rk2v1 = velocitytheta1(theta1 + (rk1v1/2)*deltaTime, theta2 + (rk1v1/2)*deltaTime, dtheta1 + (rk1v1/2)*deltaTime, dtheta2 + (rk1v1/2)*deltaTime)
+            rk31 = positiontheta1(theta1 + (rk21/2)*deltaTime, theta2 + (rk21/2)*deltaTime, dtheta1 + (rk21/2)*deltaTime, dtheta2 + (rk21/2)*deltaTime)
+            rk3v1 = velocitytheta1(theta1 + (rk2v1/2)*deltaTime, theta2 + (rk2v1/2)*deltaTime, dtheta1 + (rk2v1/2)*deltaTime, dtheta2 + (rk2v1/2)*deltaTime)
+            rk41 = positiontheta1(theta1 + rk31*deltaTime, theta2 + rk31*deltaTime, dtheta1 + rk31*deltaTime, dtheta2 + rk31*deltaTime)
+            rk4v1 = positiontheta1(theta1 + rk3v1*deltaTime, theta2 + rk3v1*deltaTime, dtheta1 + rk3v1*deltaTime, dtheta2 + rk3v1*deltaTime)
+            
+            rk12 = positiontheta2(theta1, theta2, dtheta1, dtheta2)
+            rk1v2 = velocitytheta2(theta1, theta2, dtheta1, dtheta2)
+            rk22 = positiontheta2(theta1 + (rk12/2)*deltaTime, theta2 + (rk12/2)*deltaTime, dtheta1 + (rk12/2)*deltaTime, dtheta2 + (rk12/2)*deltaTime)
+            rk2v2 = velocitytheta2(theta1 + (rk1v2/2)*deltaTime, theta2 + (rk1v2/2)*deltaTime, dtheta1 + (rk1v2/2)*deltaTime, dtheta2 + (rk1v2/2)*deltaTime)
+            rk32 = positiontheta2(theta1 + (rk22/2)*deltaTime, theta2 + (rk22/2)*deltaTime, dtheta1 + (rk22/2)*deltaTime, dtheta2 + (rk22/2)*deltaTime)
+            rk3v2 = velocitytheta2(theta1 + (rk2v2/2)*deltaTime, theta2 + (rk2v2/2)*deltaTime, dtheta1 + (rk2v2/2)*deltaTime, dtheta2 + (rk2v2/2)*deltaTime)
+            rk42 = positiontheta2(theta1 + rk32*deltaTime, theta2 + rk32*deltaTime, dtheta1 + rk32*deltaTime, dtheta2 + rk32*deltaTime)
+            rk4v2 = velocitytheta2(theta1 + rk3v2*deltaTime, theta2 + rk3v2*deltaTime, dtheta1 + rk3v2*deltaTime, dtheta2 + rk3v2*deltaTime)
+            
+            theta1 = oldtheta1 + deltaTime*(rk1v1 + 2*rk2v1 + 2*rk3v1 + rk4v1)/6
+            theta2 = oldtheta2 + deltaTime*(rk1v2 + 2*rk2v2 + 2*rk3v2 + rk4v2)/6
+            
+            dtheta1 = olddtheta1 + deltaTime*(rk11 + 2*rk21 + 2*rk31 + rk41)/6
+            dtheta2 = olddtheta2 + deltaTime*(rk12 + 2*rk22 + 2*rk32 + rk42)/6
+            """
         
         #Euler
         dtheta1 = olddtheta1 + deltaTime*positiontheta1(theta1, theta2, dtheta1, dtheta2)
@@ -202,10 +205,10 @@ def main():
         olddtheta2 = dtheta2
         
         #updating values
-        x1 = l1*np.sin(theta1) + 240
-        y1 = l1*np.cos(theta1) + 120
-        x2 = x1 + l2*np.sin(theta2)
-        y2 = y1 + l2*np.cos(theta2)
+        x1 = int(l1*np.sin(theta1)) + 240
+        y1 = int(l1*np.cos(theta1)) + 120
+        x2 = x1 + int(l2*np.sin(theta2))
+        y2 = y1 + int(l2*np.cos(theta2))
                 
         #update positions here
         mass.update(int(round(x1)), int(round(y1)))
